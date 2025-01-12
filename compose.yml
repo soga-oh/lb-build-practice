@@ -1,0 +1,40 @@
+#version: '3.8'
+
+services:
+  ansible-controller:
+    image: almalinux:9.3
+    container_name: ansible-controller
+    hostname: ansible-controller
+    privileged: true
+    volumes:
+      - ./ansible:/ansible
+    networks:
+      - haproxy_network
+
+  haproxy1:
+    image: almalinux:9.3
+    container_name: haproxy1
+    hostname: haproxy1
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_BROADCAST
+      - NET_RAW
+    networks:
+      - haproxy_network
+
+  haproxy2:
+    image: almalinux:9.3
+    container_name: haproxy2
+    hostname: haproxy2
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_BROADCAST
+      - NET_RAW
+    networks:
+      - haproxy_network
+
+networks:
+  haproxy_network:
+    driver: bridge
