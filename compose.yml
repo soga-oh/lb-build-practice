@@ -15,7 +15,7 @@ services:
       bash -c "
         dnf install -y epel-release &&
         dnf update -y &&
-        dnf install -y ansible-core openssh-clients &&
+        dnf install -y ansible-core openssh-clients less &&
         chmod 600 /root/.ssh/id_ed25519 &&
         ssh-keyscan -H haproxy1 haproxy2 >> /root/.ssh/known_hosts &&
         tail -f /dev/null
@@ -33,7 +33,7 @@ services:
       - haproxy_network
     command: >
       bash -c "
-        dnf install -y openssh-server &&
+        dnf install -y openssh-server sudo less &&
         dnf update -y &&
         ssh-keygen -A &&
         mkdir -p /root/.ssh &&
@@ -55,7 +55,7 @@ services:
       - haproxy_network
     command: >
       bash -c "
-        dnf install -y openssh-server &&
+        dnf install -y openssh-server sudo less &&
         dnf update -y &&
         ssh-keygen -A &&
         mkdir -p /root/.ssh &&

@@ -1,8 +1,7 @@
 ---
 - name: 疎通チェック
   hosts: all
-  #become: yes
-  become: no
+  become: yes
   tasks:
     - name: hostnameコマンドを実行
       command: hostname
