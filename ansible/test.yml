@@ -1,0 +1,13 @@
+---
+- name: 疎通チェック
+  hosts: all
+  #become: yes
+  become: no
+  tasks:
+    - name: hostnameコマンドを実行
+      command: hostname
+      register: hostname_result
+
+    - name: 結果を表示
+      debug:
+        msg: "{{ inventory_hostname }}のホスト名: {{ hostname_result.stdout }}"
