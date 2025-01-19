@@ -1,9 +1,10 @@
 services:
   ansible-controller:
-    image: almalinux:9
+    image: almalinux:9.3
     container_name: ansible-controller
     hostname: ansible-controller
     privileged: true
+    platform: linux/amd64
     volumes:
       - ./ansible:/ansible
       - ./ansible/.ssh/id_ed25519:/root/.ssh/id_ed25519
@@ -21,10 +22,11 @@ services:
       "
 
   haproxy1:
-    image: almalinux:9
+    image: almalinux:9.3
     container_name: haproxy1
     hostname: haproxy1
     privileged: true
+    platform: linux/amd64
     volumes:
       - ./ansible/.ssh/id_ed25519.pub:/root/.ssh/authorized_keys
     networks:
@@ -42,10 +44,11 @@ services:
       "
 
   haproxy2:
-    image: almalinux:9
+    image: almalinux:9.3
     container_name: haproxy2
     hostname: haproxy2
     privileged: true
+    platform: linux/amd64
     volumes:
       - ./ansible/.ssh/id_ed25519.pub:/root/.ssh/authorized_keys
     networks:
