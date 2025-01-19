@@ -6,6 +6,8 @@ services:
     privileged: true
     volumes:
       - ./ansible:/ansible
+      - ./ansible/.ssh/id_ed25519:/root/.ssh/id_ed25519
+      - ./ansible/.ssh/id_ed25519.pub:/root/.ssh/id_ed25519.pub
     networks:
       - haproxy_network
     command: >
@@ -13,6 +15,8 @@ services:
         dnf install -y epel-release &&
         dnf update -y &&
         dnf install -y ansible-core openssh-clients &&
+        chmod 600 /root/.ssh/id_ed25519 &&
+        ssh-keyscan -H haproxy1 haproxy2 >> /root/.ssh/known_hosts &&
         tail -f /dev/null
       "
 
@@ -21,6 +25,8 @@ services:
     container_name: haproxy1
     hostname: haproxy1
     privileged: true
+    volumes:
+      - ./ansible/.ssh/id_ed25519.pub:/root/.ssh/authorized_keys
     networks:
       - haproxy_network
     command: >
@@ -28,6 +34,9 @@ services:
         dnf install -y openssh-server &&
         dnf update -y &&
         ssh-keygen -A &&
+        mkdir -p /root/.ssh &&
+        chmod 700 /root/.ssh &&
+        chmod 600 /root/.ssh/authorized_keys &&
         /usr/sbin/sshd &&
         tail -f /dev/null
       "
@@ -37,6 +46,8 @@ services:
     container_name: haproxy2
     hostname: haproxy2
     privileged: true
+    volumes:
+      - ./ansible/.ssh/id_ed25519.pub:/root/.ssh/authorized_keys
     networks:
       - haproxy_network
     command: >
@@ -44,6 +55,9 @@ services:
         dnf install -y openssh-server &&
         dnf update -y &&
         ssh-keygen -A &&
+        mkdir -p /root/.ssh &&
+        chmod 700 /root/.ssh &&
+        chmod 600 /root/.ssh/authorized_keys &&
         /usr/sbin/sshd &&
         tail -f /dev/null
       "
