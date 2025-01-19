@@ -13,8 +13,6 @@ services:
         dnf install -y epel-release &&
         dnf update -y &&
         dnf install -y ansible-core openssh-clients &&
-        ssh-keygen -t rsa -N '' -f /root/.ssh/id_rsa &&
-        cat /root/.ssh/id_rsa.pub > /ansible/id_rsa.pub &&
         tail -f /dev/null
       "
 
@@ -25,16 +23,13 @@ services:
     privileged: true
     networks:
       - haproxy_network
-    volumes:
-      - ./ansible:/ansible
     command: >
       bash -c "
         dnf install -y openssh-server &&
+        dnf update -y &&
         ssh-keygen -A &&
-        mkdir -p /root/.ssh &&
-        cat /ansible/id_rsa.pub >> /root/.ssh/authorized_keys &&
-        chmod 600 /root/.ssh/authorized_keys &&
-        /usr/sbin/sshd -D
+        /usr/sbin/sshd &&
+        tail -f /dev/null
       "
 
   haproxy2:
@@ -44,16 +39,13 @@ services:
     privileged: true
     networks:
       - haproxy_network
-    volumes:
-      - ./ansible:/ansible
     command: >
       bash -c "
         dnf install -y openssh-server &&
+        dnf update -y &&
         ssh-keygen -A &&
-        mkdir -p /root/.ssh &&
-        cat /ansible/id_rsa.pub >> /root/.ssh/authorized_keys &&
-        chmod 600 /root/.ssh/authorized_keys &&
-        /usr/sbin/sshd -D
+        /usr/sbin/sshd &&
+        tail -f /dev/null
       "
 
 networks:
