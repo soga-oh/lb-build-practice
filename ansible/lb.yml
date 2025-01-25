@@ -1,0 +1,8 @@
+---
+- name: setup load-balancer server
+  hosts: all
+  become: yes
+  roles:
+    - { role: firewalld,  tags: firewalld }
+    - { role: haproxy,    tags: haproxy }
+    - { role: keepalived, tags: keepalived }
