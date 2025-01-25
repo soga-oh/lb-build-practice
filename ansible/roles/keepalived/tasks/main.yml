@@ -1,0 +1,23 @@
+---
+- name: Install Keepalived
+  ansible.builtin.dnf:
+    name: keepalived
+    state: present
+  become: true
+
+- name: Enable Keepalived service (enable_keepalived_autostart=true)
+  ansible.builtin.systemd:
+    name: keepalived
+    enabled: true
+  become: true
+  when: enable_keepalived_autostart | bool
+  notify: Restart Keepalived service
+  ignore_errors: true
+
+- name: Start Keepalived service (enable_keepalived_autostart=true)
+  ansible.builtin.systemd:
+    name: keepalived
+    state: started
+  become: true
+  when: enable_keepalived_autostart | bool
+  ignore_errors: true

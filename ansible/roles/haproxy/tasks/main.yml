@@ -1,0 +1,21 @@
+---
+- name: Install HAProxy
+  ansible.builtin.dnf:
+    name: haproxy
+    state: present
+  become: true
+
+- name: Enable HAProxy service
+  ansible.builtin.systemd:
+    name: haproxy
+    enabled: true
+  become: true
+  notify: Restart HAProxy service
+  ignore_errors: true
+
+- name: Start HAProxy service
+  ansible.builtin.systemd:
+    name: haproxy
+    state: started
+  become: true
+  ignore_errors: true

@@ -3,6 +3,8 @@
   hosts: all
   become: yes
   roles:
-    - { role: firewalld,  tags: firewalld }
+    #- { role: firewalld,  tags: firewalld }
     - { role: haproxy,    tags: haproxy }
     - { role: keepalived, tags: keepalived }
+  vars:
+    enable_keepalived_autostart: false
